@@ -24,6 +24,14 @@ body,
     z-index: -1;
 }
 
+.home #background-photo {
+   background-image: url('img/myriadforest_2nd-6086.jpg');
+}
+
+.shed #background-photo {
+   background-image: url('img/myriadforest_2nd-6333.jpg');
+}
+
 html,
 button,
 input,
