@@ -11,24 +11,22 @@
    ========================================================================== */
 html, 
 body, 
-#background-photo {
+.content {
    height: 100%;
 }
 
-#background-photo {
+.content {
    background-image: url('img/myriadforest_2nd-6086.jpg');
    background-size: cover;
    background-position: 50% 50%;
-   position: fixed;
-    width: 100%;
-    z-index: -1;
+   overflow-y: auto;
 }
 
-.home #background-photo {
+.content.home {
    background-image: url('img/myriadforest_2nd-6086.jpg');
 }
 
-.shed #background-photo {
+.content.shed {
    background-image: url('img/myriadforest_2nd-6333.jpg');
 }
 
