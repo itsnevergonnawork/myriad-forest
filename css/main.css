@@ -11,24 +11,26 @@
    ========================================================================== */
 html, 
 body, 
-#background-photo {
+.content {
    height: 100%;
 }
 
-#background-photo {
+body {
+    overflow: hidden;
+}
+
+.content {
+    overflow-y: auto;
    background-image: url('img/myriadforest_2nd-6086.jpg');
    background-size: cover;
    background-position: 50% 50%;
-   position: fixed;
-    width: 100%;
-    z-index: -1;
 }
 
-.home #background-photo {
+.content.home {
    background-image: url('img/myriadforest_2nd-6086.jpg');
 }
 
-.shed #background-photo {
+.content.shed {
    background-image: url('img/myriadforest_2nd-6333.jpg');
 }
 
@@ -43,6 +45,10 @@ textarea {
 html {
     font-size: 1em;
     line-height: 1.4;
+}
+
+.content.home {
+    color: white;
 }
 
 /*
@@ -118,6 +124,11 @@ textarea {
 /* ==========================================================================
    Posts
    ========================================================================== */
+
+#test-content {
+    margin: 10em auto;
+    max-width: 30em;
+}
 
 #posts {
     padding-top: 10em;
