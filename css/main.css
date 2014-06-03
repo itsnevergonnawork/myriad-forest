@@ -125,11 +125,6 @@ textarea {
    Posts
    ========================================================================== */
 
-#test-content {
-    margin: 10em auto;
-    max-width: 30em;
-}
-
 #posts {
     padding-top: 10em;
     margin-left: auto;
