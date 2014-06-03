@@ -20,10 +20,10 @@ body {
 }
 
 .content {
-    overflow-y: auto;
    background-image: url('img/myriadforest_2nd-6086.jpg');
    background-size: cover;
    background-position: 50% 50%;
+   overflow-y: auto;
 }
 
 .content.home {
