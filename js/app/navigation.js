@@ -22,7 +22,6 @@ define([
             newPage.removeClass('incoming');
             newPage.addClass('content');
             newPage.addClass('right');
-            console.log(prevRight);
             prevRight.remove();
             tray.append(newPage);
             tray.on('transitionend', function() {
