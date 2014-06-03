@@ -11,15 +11,46 @@
    ========================================================================== */
 html, 
 body, 
+#tray,
 .content {
     height: 100%;
 }
 
 body {
+    position: relative;
     overflow: hidden;
 }
 
+body {
+    font-size: 1.125em;
+}
+
+a {
+    text-decoration: none;
+}
+
+#tray {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 300%;
+    transform: translateX(-33.33333%);
+}
+
+#tray.anim {
+    transition: all 0.4s ease-out;
+}
+
+#tray.left {
+    transform: translateX(-66.66667%);
+}
+
 .content {
+    position: absolute;
+    top: 0;
+    left: 33.33333%;
+    width: 33.33333%;
     background-image: url('img/myriadforest_2nd-6086.jpg');
     background-size: cover;
     background-position: 50% 50%;
@@ -28,10 +59,27 @@ body {
 
 .content.home {
     background-image: url('img/myriadforest_2nd-6086.jpg');
+    color: white;
+}
+
+.content.home a {
+    color: white;
 }
 
 .content.shed {
     background-image: url('img/myriadforest_2nd-6333.jpg');
+}
+
+.content.left {
+    left: 0;
+}
+
+.content.right {
+    left: 66.66667%;
+}
+
+.incoming {
+    display: none;
 }
 
 html,
@@ -119,6 +167,19 @@ textarea {
     background: #ccc;
     color: #000;
     padding: 0.2em 0;
+}
+
+/* ==========================================================================
+   Nav
+   ========================================================================== */
+
+nav {
+    margin-right: 1em;
+    text-align: right;
+}
+
+nav ul {
+    display: inline-block;
 }
 
 /* ==========================================================================
