@@ -6,8 +6,8 @@ define([
 
     var initDom = function initDom() {
         tray = $('#tray');
-        incoming = $('.content').clone();
-        incoming.attr('class', 'incoming');
+        incoming = $('<div class="incoming"></div>');
+        incoming.append($('.content').clone());
         tray.append(incoming);
     };
 
@@ -16,16 +16,14 @@ define([
 
         $('.incoming').on('pjax:end', function(event) {
             var incoming = $(this),
-                newPage = incoming.clone(),
+                newPage = incoming.find('.content').clone(),
                 prevRight = $('.content.right');
 
-            newPage.removeClass('incoming');
-            newPage.addClass('content');
             newPage.addClass('right');
             prevRight.remove();
             tray.append(newPage);
             tray.on('transitionend', function() {
-                tray.find('.content').not('.left, .right').remove();
+                tray.children('.content').not('.left, .right').remove();
                 tray.removeClass('anim');
                 tray.removeClass('left');
                 newPage.removeClass('right');
@@ -37,7 +35,7 @@ define([
             $(document).on('click', 'a', function(event) {
                 $.pjax.click(event, {
                     container: '.incoming',
-                    fragment: '.content'
+                    fragment: '#tray'
                 });
             });
         }
