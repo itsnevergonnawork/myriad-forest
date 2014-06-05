@@ -34,27 +34,60 @@ a {
     top: 0;
     left: 0;
     height: 100%;
-    width: 300%;
-    transform: translateX(-33.33333%);
+    width: 100%;
+}
+
+#tray.expanded {
+    width: 200%;
+}
+
+#tray.expanded.left {
+    left: auto;
+    right: 0;
 }
 
 #tray.anim {
     transition: all 0.4s ease-out;
 }
 
-#tray.left {
-    transform: translateX(-66.66667%);
+#tray.expanded.slide {
+    transform: translateX(-50%);
+}
+
+#tray.expanded.flip {
+    left: auto;
+    right: 0;
+    transform: none;
 }
 
 .content {
     position: absolute;
     top: 0;
-    left: 33.33333%;
-    width: 33.33333%;
+    left: 0;
+    width: 100%;
     background-image: url('img/myriadforest_2nd-6086.jpg');
     background-size: cover;
     background-position: 50% 50%;
     overflow-y: auto;
+}
+
+#tray.expanded .content {
+    width: 50%;
+}
+
+#tray.expanded .content.new {
+    left: auto;
+    right: 0;
+}
+
+#tray.expanded.left .content {
+    left: auto;
+    right: 0;
+}
+
+#tray.expanded.left .content.new {
+    left: 0;
+    right: auto;
 }
 
 .content.home {
@@ -68,14 +101,6 @@ a {
 
 .content.shed {
     background-image: url('img/myriadforest_2nd-6333.jpg');
-}
-
-.content.left {
-    left: 0;
-}
-
-.content.right {
-    left: 66.66667%;
 }
 
 .incoming {

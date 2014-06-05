@@ -17,19 +17,30 @@ define([
         $('.incoming').on('pjax:end', function(event) {
             var incoming = $(this),
                 newPage = incoming.find('.content').clone(),
-                prevRight = $('.content.right');
+                oldPage = tray.children('.content');
 
-            newPage.addClass('right');
-            prevRight.remove();
-            tray.append(newPage);
-            tray.on('transitionend', function() {
-                tray.children('.content').not('.left, .right').remove();
+            var completeTrans = function() {
                 tray.removeClass('anim');
-                tray.removeClass('left');
-                newPage.removeClass('right');
-            })
+                // set the tray position using left/right and cancel the transform
+                tray.addClass('flip').removeClass('slide');
+
+                oldPage.remove();
+
+                // contract tray, new page stays in view
+                tray.removeClass('expanded');
+
+                // revealing the new page done
+                newPage.removeClass('new');
+            };
+
+            newPage.addClass('new');
+            //prevRight.remove();
+            tray.addClass('expanded');
+            tray.append(newPage);
+
+            tray.on('transitionend', completeTrans);
             tray.addClass('anim');
-            tray.addClass('left');
+            tray.addClass('slide');
         });
         if ($.support.pjax) {
             $(document).on('click', 'a', function(event) {
