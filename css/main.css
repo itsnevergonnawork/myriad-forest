@@ -268,6 +268,7 @@ nav li {
    ========================================================================== */
 
 .gallery {
+    position: relative;
     height: 100%;
     background: rgba(0, 0, 0, 0.6);
     text-align: center;
@@ -291,6 +292,36 @@ nav li {
 
 .gallery a {
     display: none;
+}
+
+.prev-image-arrow, .next-image-arrow {
+    position: absolute;
+    top: 50%;
+}
+
+.prev-image-arrow {
+    left: 16px;
+}
+
+.next-image-arrow {
+    right: 16px;
+}
+
+.prev-image-arrow:before, .next-image-arrow:before {
+    content: "";
+    display: block;
+    position: relative;
+    top: -10px;
+    width: 32px;
+    height: 19px;
+}
+
+.prev-image-arrow:before {
+    background: url('icons/arrow-l.png') no-repeat;
+}
+
+.next-image-arrow:before {
+    background: url('icons/arrow-r.png') no-repeat;
 }
 
 
