@@ -1,11 +1,14 @@
 define([
     'jquery'
 ], function($) {
+    var content = $('.content');
     var gallery = $('.gallery');
     var img = gallery.find('img');
     var photos = gallery.find('a');
     var count = photos.length;
     var idx = 0;
+
+    content.css('background-image', img.attr('src'));
 
     gallery.click(function() {
         var imgSrc;
