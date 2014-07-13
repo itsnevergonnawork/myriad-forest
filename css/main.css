@@ -76,13 +76,14 @@ a {
     top: 0;
     left: 0;
     width: 100%;
+    background-color: black;
     background-image: url('img/myriadforest_2nd-6086.jpg');
     background-size: cover;
     background-position: 50% 50%;
     overflow-y: auto;
 }
 
-#tray.expanded .content {>
+#tray.expanded .content {
     width: 50%;
 }
 
@@ -112,6 +113,10 @@ a {
 
 .content.shed {
     background-image: url('img/myriadforest_2nd-6333.jpg');
+}
+
+.content.images {
+    background-image: none;
 }
 
 .content.forest {
@@ -264,7 +269,9 @@ nav li {
 
 .gallery {
     height: 100%;
+    background: rgba(0, 0, 0, 0.6);
     text-align: center;
+    font-size: 0;
 }
 
 .gallery:before {
@@ -279,6 +286,7 @@ nav li {
     vertical-align: middle;
     max-height: 100%;
     max-width: 100%;
+    box-shadow: 0 0 150px rgba(0, 0, 0, 0.9);
 }
 
 .gallery a {
