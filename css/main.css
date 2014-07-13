@@ -27,6 +27,7 @@ body {
 
 a {
     text-decoration: none;
+    color: white;
 }
 
 #tray {
@@ -81,7 +82,7 @@ a {
     overflow-y: auto;
 }
 
-#tray.expanded .content {
+#tray.expanded .content {>
     width: 50%;
 }
 
@@ -111,6 +112,10 @@ a {
 
 .content.shed {
     background-image: url('img/myriadforest_2nd-6333.jpg');
+}
+
+.content.forest {
+    background-image: url('img/cascading forest gimp.jpg');
 }
 
 .incoming {
@@ -209,12 +214,20 @@ textarea {
    ========================================================================== */
 
 nav {
-    margin-right: 1em;
-    text-align: right;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
 }
 
 nav ul {
-    display: inline-block;
+    padding: 0;
+}
+
+nav li {
+    float: left;
+    width: 14.2857%;
+    text-align: center;
 }
 
 /* ==========================================================================
@@ -245,11 +258,32 @@ nav ul {
 
 
 
+/* ==========================================================================
+   gallery
+   ========================================================================== */
 
+.gallery {
+    height: 100%;
+    text-align: center;
+}
 
+.gallery:before {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
 
+.gallery img {
+    display: inline-block;
+    vertical-align: middle;
+    max-height: 100%;
+    max-width: 100%;
+}
 
-
+.gallery a {
+    display: none;
+}
 
 
 
