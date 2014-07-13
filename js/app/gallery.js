@@ -8,7 +8,7 @@ define([
     var count = photos.length;
     var idx = 0;
 
-    content.css('background-image', img.attr('src'));
+    content.css('background-image', "url('" + img.attr('src') + "')");
 
     gallery.click(function() {
         var imgSrc;
@@ -16,5 +16,6 @@ define([
         idx = (idx + 1) % count;
         imgSrc = photos.eq(idx).attr('href');
         img.attr('src', imgSrc);
+        content.css('background-image', "url('" + imgSrc + "')");
     });
 });
