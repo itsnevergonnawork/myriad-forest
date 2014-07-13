@@ -1,7 +1,8 @@
 define([
     'jquery',
-    'jquery.pjax'
-], function($, pjax) {
+    'jquery.pjax',
+    'app/pageSetup'
+], function($, pjax, pageSetup) {
     var tray, incoming;
 
     var initDom = function initDom() {
@@ -33,6 +34,8 @@ define([
                 // revealing the new page done
                 newPage.removeClass('new');
                 tray.off('transitionend', completeTrans);
+
+                pageSetup.setupPage();
             };
 
             newPage.addClass('new');
