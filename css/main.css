@@ -269,6 +269,7 @@ nav li {
 
 .gallery {
     height: 100%;
+    background: rgba(0, 0, 0, 0.6);
     text-align: center;
     font-size: 0;
 }
@@ -285,6 +286,7 @@ nav li {
     vertical-align: middle;
     max-height: 100%;
     max-width: 100%;
+    box-shadow: 0 0 150px rgba(0, 0, 0, 0.9);
 }
 
 .gallery a {
