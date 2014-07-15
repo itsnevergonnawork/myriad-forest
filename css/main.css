@@ -295,6 +295,7 @@ nav li {
 }
 
 .prev-image-arrow, .next-image-arrow {
+    display: none;
     position: absolute;
     top: 50%;
 }
