@@ -29,10 +29,8 @@ define([
 
             if (side) {
                 idx++;
-                console.log('next');
             } else {
                 idx = idx + count - 1;
-                console.log('prev');
             }
             idx = idx % count;
             imgSrc = photos.eq(idx).attr('href');
