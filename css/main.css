@@ -261,6 +261,28 @@ nav li {
 }
 
 
+/* ==========================================================================
+   Front page
+   ========================================================================== */
+
+#front-page {
+    height: 100%;
+    text-align: center;
+}
+
+#front-page:before {
+    content: "";
+    display: inline-block;
+    margin-right: -0.25em;
+    height: 100%;
+    vertical-align: middle;
+}
+
+#front-track {
+    display: inline-block;
+    vertical-align: middle;
+}
+
 
 
 /* ==========================================================================
@@ -334,6 +356,7 @@ nav li {
     position: absolute;
     top: 1em;
     right: 1em;
+    color: white;
 }
 
 

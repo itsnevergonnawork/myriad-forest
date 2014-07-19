@@ -1,7 +1,8 @@
 requirejs.config({
     baseUrl: 'js/lib',
     paths: {
-        app: '../app'
+        app: '../app',
+        soundcloud: 'http://connect.soundcloud.com/sdk'
     }
 });
 

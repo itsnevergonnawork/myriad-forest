@@ -7,7 +7,7 @@ define([
 ], function(domReady, navigation, pageSetup, player, playerView) {
     domReady(function() {
         navigation.init();
-        pageSetup.setupPage();
         playerView.init();
+        pageSetup.setupPage();
     });
 });
