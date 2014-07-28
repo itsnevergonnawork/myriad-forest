@@ -24,7 +24,7 @@
         <nav>
             <ul>
                 <li>
-                    <a href="forest.html" target="_blank">forest</a>
+                    <a class="prevLink" href="{{ page.prevPage.path }}" target="_blank">{{ page.prevPage.title }}</a>
                 </li>
                 <li>
                     <a href="https://soundcloud.com/myriadforest/" target="_blank">soundcloud</a>
@@ -39,10 +39,7 @@
                     <a href="http://www.facebook.com/MyriadForest/" target="_blank">facebook</a>
                 </li>
                 <li>
-                    <a href="shed.html" target="_blank">shed</a>
-                </li>
-                <li>
-                    <a href="images.html" target="_blank">images</a>
+                    <a class="nextLink" href="{{ page.nextPage.path }}" target="_blank">{{ page.nextPage.title }}</a>
                 </li>
             </ul>
         </nav>
