@@ -4,6 +4,15 @@ define([
     'react',
     'app/player'
 ], function($, React, player) {
+    var stringPad = '\xA0\xA0\xA0\xA0\xA0\xA0\xA0\xA0\xA0\xA0\xA0\xA0',
+        winLen = 12;
+
+    var padString = function padString(str) {
+        var pad = stringPad.substring(0, Math.max(0, winLen - str.length));
+
+        return str + pad;
+    };
+
     var secondsToMinSec = function secondsToMinSec(totalSecs) {
         var minutes = "" + Math.floor(totalSecs / 60);
         var seconds = "" + (totalSecs % 60);
@@ -47,12 +56,23 @@ define([
             player.addListener(this.handlePlayerStateChange);
         },
         render: function() {
+            /* TODO Pad the title to no shorter that winLen */
+            var title = padString(this.state.title.substring(0, 8)),
+                titleLen = title.length,
+                phase = this.state.position % (titleLen + winLen - 1),
+                titleBack = title.substring(phase, phase + winLen),
+                titleFront = title.substring(
+                    0, Math.max(0, phase - titleLen + 1)),
+                padLen = Math.max(0, Math.min(
+                    phase - titleLen + winLen, titleLen + winLen - phase - 1)),
+                winText = titleBack +
+                          stringPad.substring(0, padLen) +
+                          titleFront;
+
             return (
                 <span>
-                    <a onClick={ this.handleClick }>
-                        { this.state.playAction + ' ' }
-                    </a>
-                    { this.state.title }, { secondsToMinSec(this.state.position) }
+                    <a className={ this.state.playAction } onClick={ this.handleClick }></a>
+                    { winText }, { secondsToMinSec(this.state.position) }
                 </span>
             );
         }

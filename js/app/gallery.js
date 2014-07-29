@@ -1,6 +1,5 @@
 define([
-    'jquery',
-    'jquery.velocity'
+    'jquery'
 ], function($) {
     var init = function init() {
         var content = $('#tray > .content');
@@ -67,8 +66,13 @@ define([
 
     return {
         init: function() {
-            if ($('.gallery').length)
-                init();
+            if ($('.gallery').length) {
+                // load velocity with a require call to make sure it is loaded
+                // after jquery as velocity does not list jquery as a dependency
+                require(['jquery.velocity'], function() {
+                    init();
+                });
+            }
         }
     };
 });
