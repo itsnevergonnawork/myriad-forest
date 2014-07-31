@@ -56,10 +56,13 @@ define([
         });
         if ($.support.pjax) {
             $(document).on('click', 'a', function(event) {
-                $.pjax.click(event, {
-                    container: '.incoming',
-                    fragment: '#tray'
-                });
+                if (this.host == window.location.host) {
+                    $.pjax.click(event, {
+                        container: '.incoming',
+                        fragment: '#tray'
+                    });
+                    return false;
+                }
             });
         }
     };
