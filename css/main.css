@@ -34,6 +34,10 @@ a {
     color: white;
 }
 
+.prev-next-page {
+    display: none;
+}
+
 #tray {
     position: absolute;
     top: 0;
@@ -218,7 +222,7 @@ nav ul {
 
 nav li {
     float: left;
-    width: 14.2857%;
+    width: 16.66667%;
     text-align: center;
 }
 
@@ -252,12 +256,12 @@ nav li {
    Front page
    ========================================================================== */
 
-#front-page {
+.front-page {
     height: 100%;
     text-align: center;
 }
 
-#front-page:before {
+.front-page:before {
     content: "";
     display: inline-block;
     margin-right: -0.25em;
@@ -265,7 +269,7 @@ nav li {
     vertical-align: middle;
 }
 
-#front-track {
+.front-track {
     display: inline-block;
     vertical-align: middle;
 }
