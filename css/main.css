@@ -51,18 +51,6 @@ a {
     right: 0;
 }
 
-#tray.anim {
-    transition: transform 0.6s linear;
-}
-
-#tray.expanded.slide {
-    transform: translateX(-50%);
-}
-
-#tray.expanded.left.slide {
-    transform: translateX(50%);
-}
-
 #tray.expanded.flip {
     left: auto;
     right: 0;
