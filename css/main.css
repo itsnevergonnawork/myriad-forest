@@ -18,6 +18,17 @@ body,
 
 html {
     font-size: 10px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: inherit;
 }
 
 body {
@@ -206,29 +217,126 @@ textarea {
 }
 
 /* ==========================================================================
-   Nav
+   Menu
    ========================================================================== */
 
-nav {
+#menu {
+    display: none;
     position: absolute;
-    bottom: 0;
+    top: 0;
     left: 0;
+    padding-bottom: 0.66667em;
     width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+#menu.expanded {
+    display: block;
+}
+
+#show-menu, #hide-menu {
+    display: inline-block;
+    margin-left: 0.8rem;
+    border: none;
+    padding: 0.2em;
+    background: none;
+    font-size: 2.5rem;
+    color: white;
+    text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.9);
+}
+
+#show-menu {
+    position: absolute;
+    left: 0.8rem;
+    margin: 0;
+}
+
+nav {
+    margin-top: 0.52381em;
 }
 
 nav ul {
+    margin-top: 0;
     padding: 0;
+    text-align: center;
 }
 
 nav li {
-    float: left;
-    width: 16.66667%;
+    display: inline-block;
+    margin: 0 1rem;
+}
+
+#menu-social {
+    margin: 0;
+    padding: 0;
     text-align: center;
+}
+
+#menu-social li {
+    display: inline-block;
+    margin: 0 0.6rem;
+    font-size: 2.5rem;
+    list-style-type: none;
 }
 
 nav [class^="icon-"],
 nav [class*=" icon-"] {
     font-size: 1.19048em;
+}
+
+@media screen and (min-width: 640px) {
+    #menu {
+        display: block;
+        top: auto;
+        bottom: 0;
+        background: transparent;
+    }
+
+    #show-menu, #hide-menu {
+        display: none;
+    }
+
+    nav {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;$
+    }
+
+    nav ul {
+        margin-bottom: 0.85714em;
+    }
+
+    /* clearfix */
+    nav ul:after {
+        content: " ";
+        display: table;
+        clear: both;
+    }
+
+    nav li {
+        display: block;
+        position: relative;
+        z-index: 1;
+    }
+
+    .prev-nav-item {
+        float: left;
+    }
+
+    .next-nav-item {
+        float: right;
+    }
+
+    #menu-social {
+        padding-right: 5em;
+        text-align: right;
+    }
+
+    #menu-social li {
+        position: relative;
+        z-index: 1;
+    }
 }
 
 /* ==========================================================================
@@ -263,6 +371,7 @@ nav [class*=" icon-"] {
 
 .front-page {
     height: 100%;
+    font-size: 0;
     text-align: center;
 }
 
@@ -277,6 +386,7 @@ nav [class*=" icon-"] {
 .front-track {
     display: inline-block;
     vertical-align: middle;
+    font-size: 2.1rem;
 }
 
 
@@ -379,11 +489,22 @@ nav [class*=" icon-"] {
 
 #main-player {
     position: absolute;
-    top: 1em;
-    right: 1em;
+    top: 0.4rem;
+    right: 1rem;
     color: white;
 }
 
+@media screen and (min-width: 640px) {
+    #main-player {
+        top: auto;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin-bottom: 0.85714em;
+        padding-left: 6em;
+        padding-right: 13em;
+    }
+}
 
 
 
