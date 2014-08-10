@@ -10,6 +10,7 @@
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
         <link href='http://fonts.googleapis.com/css?family=Inconsolata&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="css/mf-icons.css">
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
         <script src="js/lib/modernizr-2.8.3.js"></script>
@@ -17,32 +18,39 @@
     </head>
     <body>
         <div id="tray">
+            <div class="prev-next-page">{"prevPage":{"path":"{{ page.prevPage.path }}","title":"{{ page.prevPage.title }}"},"nextPage":{"path":"{{ page.nextPage.path }}","title":"{{ page.nextPage.title }}"}}</div>
             <div class="content {{ page.id }}">
                 {{ content }}
             </div>
         </div>
-        <nav>
-            <ul>
-                <li>
-                    <a class="prevLink" href="{{ page.prevPage.path }}" target="_blank">{{ page.prevPage.title }}</a>
-                </li>
-                <li>
+        <button id="show-menu" class="icon-menu"></button>
+        <div id="menu">
+            <button id="hide-menu" class="icon-menu"></button>
+            <nav>
+                <ul>
+                    <li class="prev-nav-item">
+                        <a class="prevLink" href="{{ page.prevPage.path }}" target="_blank">{{ page.prevPage.title }}</a>
+                    </li>
+                    <li class="next-nav-item">
+                        <a class="nextLink" href="{{ page.nextPage.path }}" target="_blank">{{ page.nextPage.title }}</a>
+                    </li>
+                </ul>
+            </nav>
+            <ul id="menu-social">
+                <!--li>
                     <a href="https://soundcloud.com/myriadforest/" target="_blank">soundcloud</a>
+                </li-->
+                <li>
+                    <a class="icon-twitter" href="https://twitter.com/MyriadForest/" target="_blank"></a>
                 </li>
                 <li>
-                    <a href="https://twitter.com/MyriadForest/" target="_blank">twitter</a>
+                    <a class="icon-instagram" href="http://instagram.com/myriadforest/" target="_blank"></a>
                 </li>
                 <li>
-                    <a href="http://instagram.com/myriadforest/" target="_blank">instagram</a>
-                </li>
-                <li>
-                    <a href="http://www.facebook.com/MyriadForest/" target="_blank">facebook</a>
-                </li>
-                <li>
-                    <a class="nextLink" href="{{ page.nextPage.path }}" target="_blank">{{ page.nextPage.title }}</a>
+                    <a class="icon-facebook" href="http://www.facebook.com/MyriadForest/" target="_blank"></a>
                 </li>
             </ul>
-        </nav>
+        </div>
         <div class="player" id="main-player"></div>
     </body>
 </html>

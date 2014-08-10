@@ -67,8 +67,9 @@ define([
 
     return {
         init: function() {
-            if ($('.gallery').length)
+            if ($('.gallery').length) {
                 init();
+            }
         }
     };
 });

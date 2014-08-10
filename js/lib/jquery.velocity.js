@@ -27,11 +27,17 @@ Velocity's structure:
 
 /* NOTICE: Despite the ensuing code indicating that Velocity works *without* jQuery and *with* Zepto, this support has not yet landed. */
 
+/* wrap in a define call, so that we are able to depend on jquery, which Velocity actually requires, and have it loaded before Velocity starts using it. Also remove the define call towards the end of the function that creates Velocity. __mzki */
+
+define([
+    'jquery'
+], function($) {
+
 /******************
     Velocity.js
 ******************/
 
-;(function (global, window, document, undefined) {
+return (function (global, window, document, undefined) {
 
     /*****************
         Constants
@@ -3170,9 +3176,10 @@ Velocity's structure:
     }
 
     /* Support for AMD and CommonJS module loaders. */
-    if (typeof define !== "undefined" && define.amd) {
+    /* the whole script already wrapped ina define call, __mzki */
+    /*if (typeof define !== "undefined" && define.amd) {
         define(function() { return Velocity; });
-    } else if (typeof module !== "undefined" && module.exports) {
+    } else */if (typeof module !== "undefined" && module.exports) {
         module.exports = Velocity;
     }
 
@@ -3332,7 +3339,11 @@ Velocity's structure:
             Velocity.animate(this, propertiesMap, opts);
         };
     });
-})((window.jQuery || window.Zepto || window), window, document);
+
+    return Velocity;
+})(($ || window.Zepto || window), window, document);
+
+});
 
 /******************
    Known Issues

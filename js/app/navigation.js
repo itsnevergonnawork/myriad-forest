@@ -1,15 +1,39 @@
 define([
     'jquery',
     'jquery.pjax',
-    'app/pageSetup'
+    'app/pageSetup',
+    'jquery.velocity'
 ], function($, pjax, pageSetup) {
-    var tray, incoming;
+    var tray, incoming,
+        prevLink, nextLink;
 
     var initDom = function initDom() {
         tray = $('#tray');
         incoming = $('<div class="incoming"></div>');
+        prevLink = $('.prevLink');
+        nextLink = $('.nextLink');
+        incoming.append($('.prev-next-page').clone());
         incoming.append($('.content').clone());
         tray.append(incoming);
+    };
+
+    var updatePrevNextLinks = function updatePrevNextLinks(linkData) {
+        var both = prevLink.add(nextLink);
+
+        both.removeAttr('href');
+        both.velocity({ opacity: 0 }, {
+            duration: 250,
+            complete: function() {
+                prevLink.text(linkData.prevPage.title);
+                nextLink.text(linkData.nextPage.title);
+            }
+        }).velocity({ opacity: 1 }, {
+            duration: 250,
+            complete: function() {
+                prevLink.attr('href', linkData.prevPage.path);
+                nextLink.attr('href', linkData.nextPage.path);
+            }
+        });
     };
 
     var init = function init() {
@@ -19,12 +43,16 @@ define([
             var incoming = $(this),
                 newPage = incoming.find('.content').clone(),
                 oldPage = tray.children('.content'),
-                moveRight = true;
+                prevNextBefore = tray.children('.prev-next-page'),
+                prevNextNow = incoming.find('.prev-next-page'),
+                prevNextBeforeObj,
+                prevNextNowObj,
+                moveRight = false,
+                propertyMap = {};
 
             var completeTrans = function() {
-                tray.removeClass('anim');
                 // set the tray position using left/right and cancel the transform
-                tray.addClass('flip').removeClass('slide');
+                tray.css('transform', '').addClass('flip');
 
                 oldPage.remove();
 
@@ -33,33 +61,52 @@ define([
 
                 // revealing the new page done
                 newPage.removeClass('new');
-                tray.off('transitionend', completeTrans);
 
                 pageSetup.setupPage();
             };
 
+            try {
+                prevNextBeforeObj = JSON.parse(prevNextBefore.text());
+                prevNextNowObj = JSON.parse(prevNextNow.text());
+                if (prevNextBeforeObj.nextPage.path == prevNextNowObj.prevPage.path) {
+                    moveRight = true;
+                }
+            } catch (e) {
+                console.log('prev/next page data parse error');
+            }
+            prevNextBefore.text(prevNextNow.text());
+
+            /*if ($(event.relatedTarget).hasClass('prevLink'))
+                moveRight = true;*/
+
             newPage.addClass('new');
-            //prevRight.remove();
             tray.addClass('expanded' + (moveRight ? ' left' : ''));
             tray.append(newPage);
 
-            tray.on('transitionend', completeTrans);
+            if (prevNextNowObj.prevPage) {
+                updatePrevNextLinks(prevNextNowObj);
+            }
 
-            // adding the anim class right after the other style changes
-            // and/or adding the new content seems to be animating in the middle
-            // of those previous changes, or something.
-            // maybe just limiting the animation to the transform property is enough
-            setTimeout(function() {
-                tray.addClass('anim');
-                tray.addClass('slide');
-            }, 30);
+            if (moveRight) {
+                propertyMap.translateX = ['50%', 0];
+            } else {
+                propertyMap.translateX = ['-50%', 0];
+            }
+            tray.velocity(propertyMap, {
+                duration: 500,
+                complete: completeTrans
+            });
         });
+
         if ($.support.pjax) {
             $(document).on('click', 'a', function(event) {
-                $.pjax.click(event, {
-                    container: '.incoming',
-                    fragment: '#tray'
-                });
+                if (this.host == window.location.host) {
+                    $.pjax.click(event, {
+                        container: '.incoming',
+                        fragment: '#tray'
+                    });
+                    return false;
+                }
             });
         }
     };
