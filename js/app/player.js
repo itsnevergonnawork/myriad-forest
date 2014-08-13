@@ -22,6 +22,9 @@ define([
         notifyListeners({ title: track.title });
 
         SC.stream("/tracks/" + track.id, function(sound) {
+            if (stream)
+                stream.destruct();
+
             stream = sound;
 
             sound.play({
