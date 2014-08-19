@@ -26,7 +26,6 @@ define([
 
         SC.stream("/tracks/" + track.id, function(sound) {
             if (stream) {
-                stream.stop();
                 stream.destruct();
             }
 

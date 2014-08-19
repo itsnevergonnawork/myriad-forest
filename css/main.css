@@ -9,8 +9,8 @@
 /* ==========================================================================
    Base styles: opinionated defaults
    ========================================================================== */
-html, 
-body, 
+html,
+body,
 #tray,
 .content {
     height: 100%;
@@ -466,9 +466,11 @@ nav [class*=" icon-"] {
 
 .sc-track:before,
 .play:before,
-.pause:before {
+.pause:before,
+.noaction:before {
     display: inline-block;
     padding-right: 0.42857em;
+    width: 1.66667em;
     font-family: 'mf-icons';
     speak: none;
     font-style: normal;
@@ -493,11 +495,37 @@ nav [class*=" icon-"] {
 	content: "\e601";
 }
 
+.noaction:before {
+    content: " ";
+}
+
 #main-player {
     position: absolute;
     top: 0.4rem;
     right: 1rem;
+    padding-left: 3.5em;
+    max-width: 100%;
     color: white;
+}
+
+.main-player-body {
+    position: relative;
+    float: left;
+    padding-right: 3.52381em;
+    height: 1.33333em;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.main-player-title {
+}
+
+.main-player-time {
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 
 @media screen and (min-width: 640px) {

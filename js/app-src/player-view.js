@@ -28,7 +28,7 @@ define([
 
     var Player = React.createClass({
         getInitialState: function() {
-            return { title: '', position: 0, playAction: '' };
+            return { title: '', position: 0, playAction: 'noaction' };
         },
         handlePlayerStateChange: function(data) {
             var newState = {};
@@ -40,7 +40,7 @@ define([
                 newState.playAction = 'play';
             }
             if (data.playState && 'stopped' == data.playState) {
-                newState.playAction = '';
+                newState.playAction = 'noaction';
                 newState.title = '';
             }
             if (data.title) {
@@ -79,11 +79,17 @@ define([
                           stringPad.substring(0, padLen) +
                           titleFront;
 
+            var time = "";
+            if ('pause' == this.state.playAction || 'play' == this.state.playAction) {
+                time = secondsToMinSec(this.state.position);
+            }
+
             return (
-                <span>
+                <div className="main-player-body">
                     <a className={ this.state.playAction } onClick={ this.handleClick }></a>
-                    { winText }, { secondsToMinSec(this.state.position) }
-                </span>
+                    <span className="main-player-title">{ this.state.title }</span>
+                    <div className="main-player-time">{ time }</div>
+                </div>
             );
         }
     });
