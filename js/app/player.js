@@ -19,11 +19,16 @@ define([
     var playTrackResource = function playTrackResource(track) {
         var millis = 0;
 
-        notifyListeners({ title: track.title });
+        notifyListeners({
+            title: track.title,
+            permalinkUrl: track.permalink_url
+        });
 
         SC.stream("/tracks/" + track.id, function(sound) {
-            if (stream)
+            if (stream) {
+                stream.stop();
                 stream.destruct();
+            }
 
             stream = sound;
 
@@ -70,6 +75,17 @@ define([
         listeners.push(callback);
     };
 
+    var removeListener = function removeListener(callback) {
+        var i, l;
+
+        for (i = 0, l = listeners.length; i < l; i++) {
+            if (listeners[i] == callback) {
+                listeners.splice(i, 1);
+                console.log('removed player event listener');
+            }
+        }
+    };
+
     var notifyListeners = function notifyListeners(data) {
         var i, l;
 
@@ -84,6 +100,7 @@ define([
 
     return {
         addListener: addListener,
+        removeListener: removeListener,
         playTrack: playTrack,
         pause: pause,
         play: play

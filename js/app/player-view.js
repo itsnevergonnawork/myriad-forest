@@ -2,8 +2,9 @@
 define([
     'jquery',
     'react',
-    'app/player'
-], function($, React, player) {
+    'app/player',
+    'app/util'
+], function($, React, player, util) {
     var stringPad = '\xA0\xA0\xA0\xA0\xA0\xA0\xA0\xA0\xA0\xA0\xA0\xA0',
         winLen = 12;
 
@@ -27,20 +28,29 @@ define([
 
     var Player = React.createClass({displayName: 'Player',
         getInitialState: function() {
-            return { title: 'dummy', position: 0, playAction: '' };
+            return { title: '', position: 0, playAction: '' };
         },
         handlePlayerStateChange: function(data) {
+            var newState = {};
+
             if (data.playState && 'playing' == data.playState) {
-                data.playAction = 'pause';
+                newState.playAction = 'pause';
             }
             if (data.playState && 'paused' == data.playState) {
-                data.playAction = 'play';
+                newState.playAction = 'play';
             }
             if (data.playState && 'stopped' == data.playState) {
-                data.playAction = '';
+                newState.playAction = '';
+                newState.title = '';
             }
-            delete data.playState;
-            this.setState(data);
+            if (data.title) {
+                newState.title = data.title;
+            }
+            if (data.position) {
+                newState.position = data.position;
+            }
+
+            this.setState(newState);
         },
         handleClick: function() {
             if ('pause' == this.state.playAction) {
@@ -78,6 +88,66 @@ define([
         }
     });
 
+    var TrackPlayer = React.createClass({displayName: 'TrackPlayer',
+        getInitialState: function() {
+            return {
+                active: false,
+                state: 'stopped'
+            }
+        },
+        handlePlayerStateChange: function(data) {
+            var newState = {};
+
+            if (data.permalinkUrl) {
+                if (util.urlPath(data.permalinkUrl) == util.urlPath(this.props.href)) {
+                    newState.active = true;
+                } else {
+                    newState.active = false;
+                    newState.state = 'stopped';
+                }
+                this.setState(newState);
+            }
+
+            if (!this.state.active)
+                return;
+
+            if (data.playState) {
+                newState.state = data.playState;
+                this.setState(newState);
+            }
+        },
+        handleClick: function() {
+            if ('stopped' == this.state.state) {
+                player.addListener(this.handlePlayerStateChange);
+                player.playTrack(this.props.href);
+            }
+            if ('playing' == this.state.state) {
+                player.pause();
+            }
+            if ('paused' == this.state.state) {
+                player.play();
+            }
+
+            return false;
+        },
+        render: function() {
+            var className = 'sc-track';
+
+            if ('playing' == this.state.state) {
+                className += ' pause';
+            }
+            return (
+                React.DOM.a( {className: className,  href: this.props.href,  onClick: this.handleClick }, 
+                    this.props.title
+                )
+            );
+        }
+    });
+
+    var renderTrack = function renderTrack(node, props) {
+        React.renderComponent(TrackPlayer( {href:props.href, title:props.title} ), node);
+    }
+
     var init = function init() {
         $('.player').each(function() {
             React.renderComponent(Player(null ), this);
@@ -85,6 +155,7 @@ define([
     };
 
     return {
-        init: init
+        init: init,
+        renderTrack: renderTrack
     };
 });

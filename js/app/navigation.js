@@ -14,7 +14,7 @@ define([
         nextLink = $('.nextLink');
         incoming.append($('.prev-next-page').clone());
         incoming.append($('.content').clone());
-        tray.append(incoming);
+        $('body').append(incoming);
     };
 
     var updatePrevNextLinks = function updatePrevNextLinks(linkData) {

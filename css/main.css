@@ -390,6 +390,11 @@ nav [class*=" icon-"] {
     font-size: 2.1rem;
 }
 
+.second-track {
+    padding-bottom: 8em;
+    text-align: center;
+}
+
 
 
 /* ==========================================================================
