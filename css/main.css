@@ -46,6 +46,10 @@ a {
     color: white;
 }
 
+a:focus, a:active {
+    outline: none;
+}
+
 .prev-next-page {
     display: none;
 }
