@@ -27,10 +27,12 @@ define([
 
         state.title = track.title;
         state.permalinkUrl = track.permalink_url;
+        state.position = 0;
         // TODO could we always broadcast the (in)complete state?
         notifyListeners({
             title: state.title,
-            permalinkUrl: state.permalinkUrl
+            permalinkUrl: state.permalinkUrl,
+            position: state.position
         });
 
         SC.stream("/tracks/" + track.id, function(sound) {
@@ -55,14 +57,20 @@ define([
                     state.permalinkUrl = '';
                     state.playState = 'stopped';
                     state.position = 0;
-                    notifyListeners({ playState: state.playState });
+                    notifyListeners({
+                        playState: state.playState,
+                        position: state.position
+                    });
                 },
                 onfinish: function() {
                     state.title = '';
                     state.permalinkUrl = '';
                     state.playState = 'stopped';
                     state.position = 0;
-                    notifyListeners({ playState: state.playState });
+                    notifyListeners({
+                        playState: state.playState,
+                        position: state.position
+                    });
                 },
                 whileplaying: function() {
                     var pos = this.position;
