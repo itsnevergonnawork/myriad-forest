@@ -2,7 +2,13 @@ define([
     'soundcloud'
 ], function() {
     var listeners = [],
-        stream;
+        stream,
+        state = {
+            title: '',
+            permalinkUrl: '',
+            playState: 'stopped',
+            position: 0
+        };
 
     var playTrack = function playTrack(src) {
         if (isNaN(parseInt(src, 10))) {
@@ -19,9 +25,12 @@ define([
     var playTrackResource = function playTrackResource(track) {
         var millis = 0;
 
+        state.title = track.title;
+        state.permalinkUrl = track.permalink_url;
+        // TODO could we always broadcast the (in)complete state?
         notifyListeners({
-            title: track.title,
-            permalinkUrl: track.permalink_url
+            title: state.title,
+            permalinkUrl: state.permalinkUrl
         });
 
         SC.stream("/tracks/" + track.id, function(sound) {
@@ -33,16 +42,27 @@ define([
 
             sound.play({
                 onplay: function() {
-                    notifyListeners({ playState: 'playing' });
+                    state.playState = 'playing';
+                    // TODO could we always broadcast the (in)complete state?
+                    notifyListeners({ playState: state.playState });
                 },
                 onpause: function() {
-                    notifyListeners({ playState: 'paused' });
+                    state.playState = 'paused';
+                    notifyListeners({ playState: state.playState });
                 },
                 onstop: function() {
-                    notifyListeners({ playState: 'stopped' });
+                    state.title = '';
+                    state.permalinkUrl = '';
+                    state.playState = 'stopped';
+                    state.position = 0;
+                    notifyListeners({ playState: state.playState });
                 },
                 onfinish: function() {
-                    notifyListeners({ playState: 'stopped' });
+                    state.title = '';
+                    state.permalinkUrl = '';
+                    state.playState = 'stopped';
+                    state.position = 0;
+                    notifyListeners({ playState: state.playState });
                 },
                 whileplaying: function() {
                     var pos = this.position;
@@ -50,7 +70,8 @@ define([
                     if (pos > millis + 1000) {
                         millis = pos - pos % 1000;
                     }
-                    notifyListeners({ position: millis / 1000 });
+                    state.position = millis / 1000;
+                    notifyListeners({ position: state.position });
                 }
             });
         });
@@ -83,6 +104,7 @@ define([
                 console.log('removed player event listener');
             }
         }
+        console.log(listeners.length + ' listeners left');
     };
 
     var notifyListeners = function notifyListeners(data) {
@@ -93,6 +115,10 @@ define([
         }
     };
 
+    var broadcastState = function broadcastState() {
+        notifyListeners(state);
+    };
+
     SC.initialize({
         client_id: '246540dc6bc2ef862045657eadd46d76'
     });
@@ -100,6 +126,7 @@ define([
     return {
         addListener: addListener,
         removeListener: removeListener,
+        broadcastState: broadcastState,
         playTrack: playTrack,
         pause: pause,
         play: play

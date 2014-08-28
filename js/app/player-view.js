@@ -6,7 +6,8 @@ define([
     'app/util'
 ], function($, React, player, util) {
     var stringPad = '\xA0\xA0\xA0\xA0\xA0\xA0\xA0\xA0\xA0\xA0\xA0\xA0',
-        winLen = 12;
+        winLen = 12,
+        trackPlayerNodes = [];
 
     var padString = function padString(str) {
         var pad = stringPad.substring(0, Math.max(0, winLen - str.length));
@@ -101,6 +102,13 @@ define([
                 state: 'stopped'
             }
         },
+        componentWillMount: function() {
+            player.addListener(this.handlePlayerStateChange);
+        },
+        componentWillUnmount: function() {
+            console.log('player gone!');
+            player.removeListener(this.handlePlayerStateChange);
+        },
         handlePlayerStateChange: function(data) {
             var newState = {};
 
@@ -124,7 +132,6 @@ define([
         },
         handleClick: function() {
             if ('stopped' == this.state.state) {
-                player.addListener(this.handlePlayerStateChange);
                 player.playTrack(this.props.href);
             }
             if ('playing' == this.state.state) {
@@ -152,7 +159,22 @@ define([
 
     var renderTrack = function renderTrack(node, props) {
         React.renderComponent(TrackPlayer( {href:props.href, title:props.title} ), node);
+        trackPlayerNodes.push(node);
     }
+
+    var unmountAllTracks = function unmountAllTracks() {
+        var i, l, node;
+
+        for (i = 0, l = trackPlayerNodes.length; i < l; i++) {
+            node = trackPlayerNodes[i];
+            React.unmountComponentAtNode(node);
+        }
+        trackPlayerNodes.splice(i, l);
+    };
+
+    var updateTrackViews = function updateTrackViews() {
+        player.broadcastState();
+    };
 
     var init = function init() {
         $('.player').each(function() {
@@ -162,6 +184,8 @@ define([
 
     return {
         init: init,
-        renderTrack: renderTrack
+        renderTrack: renderTrack,
+        updateTrackViews: updateTrackViews,
+        unmountAllTracks: unmountAllTracks
     };
 });

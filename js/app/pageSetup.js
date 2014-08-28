@@ -11,6 +11,11 @@ define([
                 title: link.text()
             });
         });
+        playerView.updateTrackViews();
+    };
+
+    var tearTracksDown = function tearTracksDown() {
+        playerView.unmountAllTracks();
     };
 
     var setupPage = function setupPage() {
@@ -18,7 +23,12 @@ define([
         gallery.init();
     };
 
+    var tearPageDown = function tearPageDown() {
+        tearTracksDown();
+    };
+
     return {
-        setupPage: setupPage
+        setupPage: setupPage,
+        tearPageDown: tearPageDown
     };
 });

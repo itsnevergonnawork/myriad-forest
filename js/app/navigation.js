@@ -65,6 +65,8 @@ define([
                 pageSetup.setupPage();
             };
 
+            pageSetup.tearPageDown();
+
             try {
                 prevNextBeforeObj = JSON.parse(prevNextBefore.text());
                 prevNextNowObj = JSON.parse(prevNextNow.text());
