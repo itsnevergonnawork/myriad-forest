@@ -1,6 +1,7 @@
 define([
+    'app/youtube',
     'soundcloud'
-], function() {
+], function(youtube) {
     var listeners = [],
         stream,
         state = {
@@ -47,6 +48,7 @@ define([
                     state.playState = 'playing';
                     // TODO could we always broadcast the (in)complete state?
                     notifyListeners({ playState: state.playState });
+                    youtube.pausePlayers();
                 },
                 onpause: function() {
                     state.playState = 'paused';

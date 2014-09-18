@@ -27,6 +27,7 @@ define([
 
     var tearPageDown = function tearPageDown() {
         tearTracksDown();
+        youtube.dropAllPlayers();
     };
 
     return {
