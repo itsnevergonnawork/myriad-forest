@@ -10,7 +10,11 @@ function(require) {
             cover = element.find('.youtube-cover'),
             busyBox = element.find('.youtube-busy');
 
-        busyBox.velocity({ opacity: 1 }, { display: 'block' });
+        busyBox.velocity({ opacity: 0.85 }, {
+            duration: 1000,
+            easing: 'easeOutCirc',
+            display: 'block'
+        });
 
         /* require the player here to avoid a circular dependency */
         require([
@@ -23,11 +27,15 @@ function(require) {
                     {
                         height: '360',
                         width: '640',
-                        videoId: element.data('youtubeId'),
+                        videoId: vidBox.data('youtubeId'),
                         events: {
                             'onReady': function(event) {
                                 busyBox.velocity('stop');
-                                cover.velocity({ opacity: 0 }, { display: 'none' });
+                                cover.velocity({ opacity: 0 }, {
+                                    duration: 1000,
+                                    easing: 'easeOutCubic',
+                                    display: 'none'
+                                });
                                 event.target.playVideo();
                             },
                             'onStateChange': function(event) {
