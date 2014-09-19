@@ -1,10 +1,17 @@
 define([
-    'require'
+    'require',
+    'jquery.velocity'
 ],
 function(require) {
     var ytPlayers = [];
 
     var initPlayer = function initPlayer(element) {
+        var vidBox = element.find('.youtube-vid'),
+            cover = element.find('.youtube-cover'),
+            busyBox = element.find('.youtube-busy');
+
+        busyBox.velocity({ opacity: 1 }, { display: 'block' });
+
         /* require the player here to avoid a circular dependency */
         require([
             'app/player',
@@ -12,13 +19,15 @@ function(require) {
             ],
             function(player) {
                 var ytPlayer = new YT.Player(
-                    element.get(0),
+                    vidBox.get(0),
                     {
                         height: '360',
                         width: '640',
                         videoId: element.data('youtubeId'),
                         events: {
                             'onReady': function(event) {
+                                busyBox.velocity('stop');
+                                cover.velocity({ opacity: 0 }, { display: 'none' });
                                 event.target.playVideo();
                             },
                             'onStateChange': function(event) {
@@ -36,8 +45,12 @@ function(require) {
     };
 
     var initAllPlayers = function initAllPlayers() {
-        $('.youtube-vid').click(function() {
-            initPlayer($(this));
+        $('.youtube-box').each(function() {
+            var box = $(this);
+
+            box.find('.youtube-cover').click(function() {
+                initPlayer(box);
+            });
         });
     };
 

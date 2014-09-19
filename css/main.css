@@ -357,11 +357,14 @@ nav [class*=" icon-"] {
 
 .fluid-vid {
     position: relative;
+    z-index: 0;
     padding-bottom: 56.25%;
     height: 0;
 }
 
-.fluid-vid .youtube-vid,
+.youtube-cover,
+.youtube-busy,
+.youtube-vid,
 .fluid-vid iframe {
     position: absolute;
     top: 0;
@@ -370,14 +373,21 @@ nav [class*=" icon-"] {
     height: 100%;
 }
 
-div.youtube-vid {
+.youtube-cover {
+    z-index: 1;
     background-size: cover;
     background-position: 50% 50%;
     text-align: center;
     cursor: pointer;
 }
 
-div.youtube-vid:before {
+.youtube-busy {
+    display: none;
+    background: black;
+    opacity: 0;
+}
+
+.youtube-cover:before {
     content: "";
     display: inline-block;
     margin-right: -0.25em;
