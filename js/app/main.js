@@ -8,6 +8,7 @@ define([
 ], function(domReady, navigation, pageSetup, player, playerView) {
     domReady(function() {
         navigation.init();
+        /* TODO Call to a function that no longer does anything..? */
         playerView.init();
         pageSetup.setupPage();
     });
