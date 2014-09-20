@@ -325,6 +325,7 @@ nav [class*=" icon-"] {
         display: block;
         position: relative;
         z-index: 1;
+        margin: 0 1.33333em;
     }
 
     .prev-nav-item {
@@ -336,7 +337,7 @@ nav [class*=" icon-"] {
     }
 
     #menu-social {
-        padding-right: 5em;
+        padding-right: 5.33333em;
         text-align: right;
     }
 
