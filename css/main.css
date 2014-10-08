@@ -50,6 +50,15 @@ a:focus, a:active {
     outline: none;
 }
 
+p {
+    margin: 1.33333em 0;
+}
+
+
+/* ==========================================================================
+   Page navigation mechanism
+   ========================================================================== */
+
 .prev-next-page {
     display: none;
 }
@@ -114,6 +123,11 @@ a:focus, a:active {
     right: auto;
 }
 
+
+/* ==========================================================================
+   Page backgrounds/colours
+   ========================================================================== */
+
 .content.home {
     background-image: url('img/myriadforest_2nd-6086.jpg');
     color: white;
@@ -139,15 +153,16 @@ a:focus, a:active {
     display: none;
 }
 
+
+/* ==========================================================================
+   H5BP stuff
+   ========================================================================== */
+
 html,
 button,
 input,
 select,
 textarea {
-    color: white;
-}
-
-.content.home {
     color: white;
 }
 
@@ -356,6 +371,10 @@ nav [class*=" icon-"] {
     margin-left: auto;
     margin-right: auto;
     max-width: 35em;
+}
+
+.shed-post {
+    margin: 4em 0;
 }
 
 .fluid-vid {
