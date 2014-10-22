@@ -460,22 +460,29 @@ nav [class*=" icon-"] {
    ========================================================================== */
 
 .gallery {
-    position: relative;
-    height: 100%;
     background: rgba(0, 0, 0, 0.6);
-    text-align: center;
-    font-size: 0;
     cursor: pointer;
 }
 
-.gallery:before {
+.gallery.cover-parent {
+    height: 100%;
+}
+
+.gallery-root {
+    position: relative;
+    height: 100%;
+    text-align: center;
+    font-size: 0;
+}
+
+.gallery-root:before {
     content: "";
     display: inline-block;
     height: 100%;
     vertical-align: middle;
 }
 
-.gallery img {
+.gallery-root img {
     display: inline-block;
     vertical-align: middle;
     max-height: 100%;

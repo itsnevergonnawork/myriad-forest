@@ -1,8 +1,9 @@
 define([
+    'jquery',
     'app/gallery',
     'app/player-view',
     'app/youtube'
-], function(gallery, playerView, youtube) {
+], function($, gallery, playerView, youtube) {
     var setupTracks = function setupTracks() {
         $('#tray .track-player').each(function() {
             var link = $(this).find('a');
@@ -19,9 +20,15 @@ define([
         playerView.unmountAllTracks();
     };
 
+    var setupGalleries = function setupGalleries() {
+        $('.gallery').each(function() {
+            gallery.render(this, $(this).data('galleryId'));
+        });
+    }
+
     var setupPage = function setupPage() {
         setupTracks();
-        gallery.init();
+        setupGalleries();
         youtube.initAllPlayers();
     };
 

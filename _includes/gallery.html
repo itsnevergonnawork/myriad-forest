@@ -1,0 +1,6 @@
+<div class="gallery {{ include.galleryClass }}" data-gallery-id="{{ include.galleryId }}">
+    <div class="gallery-root">
+        <img src="{{ site.data.galleries[include.galleryId][0].path }}">
+    </div>
+</div>
+<script id="gallery-data-{{ include.galleryId }}" type="gallery-data">{{ site.data.galleries[include.galleryId] | jsonify }}</script>

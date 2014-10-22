@@ -176,6 +176,7 @@ define([
         player.broadcastState();
     };
 
+    /* TODO This no longer does anything..? */
     var init = function init() {
         $('.player').each(function() {
             React.renderComponent(Player(null ), this);
