@@ -1,4 +1,6 @@
-define([], function(React) {
+define([
+    'imagesloaded.pkgd'
+], function(imagesloaded) {
     var galleries = [];
 
     var getGalleryData = function getGalleryData(galleryId) {
@@ -9,8 +11,16 @@ define([], function(React) {
         return galleries[galleryId];
     };
 
-    var getImagePath = function getImagePath(galleryId, imgIdx) {
-        return getGalleryData(galleryId)[imgIdx].path;
+    var requestImage = function getImagePath(galleryId, imgIdx, callback) {
+        var imgNode = document.createElement('img'),
+            path = getGalleryData(galleryId)[imgIdx].path,
+            imgLoad;
+
+        imgNode.src = path;
+        imgLoad = imagesloaded(imgNode);
+        imgLoad.on('done', function() {
+            callback(path);
+        });
     };
 
     var getNextIndex = function getNextIndex(galleryId, index) {
@@ -20,7 +30,7 @@ define([], function(React) {
     };
 
     return {
-        getImagePath: getImagePath,
+        requestImage: requestImage,
         getNextIndex: getNextIndex
     };
 });

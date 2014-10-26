@@ -8,11 +8,14 @@ define([
 
     var GallerySlide = React.createClass({displayName: 'GallerySlide',
         getInitialState: function() {
-            return { imageLoaded: false };
+            return { imagePath: '' };
         },
         componentDidMount: function() {
             console.log('slide did mount');
-            this.setState({ imageLoaded: true });
+            imageService.requestImage(this.props.galleryId, this.props.imgIdx, this.handleImage);
+        },
+        handleImage: function(path) {
+            this.setState({ imagePath: path });
         },
         componentWillEnter: function(done) {
             done();
@@ -23,12 +26,12 @@ define([
         render: function() {
             var overlay;
 
-            if (!this.state.imageLoaded)
+            if (!this.state.imagePath)
                 overlay = GalleryOverlay( {key:"overlay"} );
 
             return (
                 ReactTransitionGroup( {component:React.DOM.div, className:"gallery-slide"}, 
-                    React.DOM.img( {src:imageService.getImagePath(this.props.galleryId, this.props.imgIdx)} ),
+                    React.DOM.img( {src:this.state.imagePath} ),
                     overlay
                 )
             );
