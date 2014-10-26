@@ -13,7 +13,14 @@ define([], function(React) {
         return getGalleryData(galleryId)[imgIdx].path;
     };
 
+    var getNextIndex = function getNextIndex(galleryId, index) {
+        var length = getGalleryData(galleryId).length;
+
+        return (index + 1) % length;
+    };
+
     return {
-        getImagePath: getImagePath
+        getImagePath: getImagePath,
+        getNextIndex: getNextIndex
     };
 });
