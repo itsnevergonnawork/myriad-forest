@@ -11,17 +11,24 @@ define([
             return { imagePath: '' };
         },
         componentDidMount: function() {
-            console.log('slide did mount');
             imageService.requestImage(this.props.galleryId, this.props.imgIdx, this.handleImage);
         },
         handleImage: function(path) {
-            this.setState({ imagePath: path });
-        },
-        componentWillEnter: function(done) {
-            done();
+            if (this.isMounted()) {
+                this.setState({ imagePath: path });
+            }
         },
         componentWillLeave: function(done) {
-            velocity.animate(this.getDOMNode(), { opacity: 0 }, { duration: 400, complete: done });
+            var completeLeave = (function() {
+                // see GalleryOverlay for an explanation
+                // the containing gallery might be gone because we have
+                // navigated to another page
+                if (this.isMounted()) {
+                    done();
+                }
+            }).bind(this);
+
+            velocity.animate(this.getDOMNode(), { opacity: 0 }, { duration: 400, complete: completeLeave });
         },
         render: function() {
             var overlay;
@@ -40,10 +47,32 @@ define([
 
     var GalleryOverlay = React.createClass({
         componentWillLeave: function(done) {
-            velocity.animate(this.getDOMNode(), { opacity: 0 }, { duration: 400, complete: done });
+            var completeLeave = (function() {
+                // the reason it might not be mounted despite not having called
+                // done() yet is that the parent GallerySlide component may
+                // have disappeared before the GalleryOverlay has finished
+                // animating away.
+                // possible sequence:
+                // 1. a new slide (a) is mounted in the gallery and requests
+                //    it's image
+                // 2. the user navigates to yet another slide, so (a) starts
+                //    leaving
+                // 3. while (a) is leaving, it's image finishes downloading,
+                //    gets rendered, and the overlay starts leaving.
+                // 4. (a) completes the leaving animation and disappears,
+                //    taking the overlay with it
+                // 5. the overlay completes the animation, tries to call done()
+                //    which causes it's componentDidLeave method to be called
+                //    but the component does not exist anymore at this point,
+                //    causing an error
+                if (this.isMounted()) {
+                    done();
+                }
+            }).bind(this);
+
+            velocity.animate(this.getDOMNode(), { opacity: 0 }, { duration: 400, complete: completeLeave });
         },
         componentDidLeave: function() {
-            console.log('overlay did leave');
         },
         render: function() {
             return (
@@ -58,15 +87,10 @@ define([
         getInitialState: function() {
             return { imgIdx: 0 };
         },
-        componentDidMount: function() {
-            /*console.log('gallery did mount');
-            this.setState({ imgIdx: 0 });*/
-        },
         handleClick: function() {
             var index = this.state.imgIdx,
                 next = imageService.getNextIndex(this.props.galleryId, index);
 
-            console.log('next image: ' + next);
             this.setState({ imgIdx: next });
         },
         render: function() {
