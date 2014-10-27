@@ -21,7 +21,7 @@ define([
     };
 
     var setupGalleries = function setupGalleries() {
-        $('.gallery').each(function() {
+        $('#tray .gallery').each(function() {
             gallery.render(this, $(this).data('galleryId'));
         });
     }
