@@ -36,6 +36,12 @@ define([
         return (index + 1) % length;
     };
 
+    var getPrevIndex = function getPrevIndex(galleryId, index) {
+        var length = getGalleryData(galleryId).length;
+
+        return (length + index - 1) % length;
+    }
+
     var setupMediaQueries = function setupMediaQueries() {
         enquire.register('screen and (max-width: 767px)', function() {
             basePath = basePaths[0];
@@ -49,6 +55,7 @@ define([
 
     return {
         requestImage: requestImage,
-        getNextIndex: getNextIndex
+        getNextIndex: getNextIndex,
+        getPrevIndex: getPrevIndex
     };
 });

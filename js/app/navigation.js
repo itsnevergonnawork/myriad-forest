@@ -2,7 +2,7 @@ define([
     'jquery',
     'jquery.pjax',
     'app/pageSetup',
-    'jquery.velocity'
+    'velocity'
 ], function($, pjax, pageSetup) {
     var tray, incoming,
         prevLink, nextLink;

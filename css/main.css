@@ -460,6 +460,7 @@ nav [class*=" icon-"] {
    ========================================================================== */
 
 .gallery {
+    overflow: hidden;
     background: rgba(0, 0, 0, 0.6);
     cursor: pointer;
 }
@@ -495,7 +496,15 @@ nav [class*=" icon-"] {
     vertical-align: middle;
     max-height: 100%;
     max-width: 100%;
-    box-shadow: 0 0 150px rgba(0, 0, 0, 0.9);
+}
+
+.gallery-slide.prev {
+    left: -100%;
+}
+
+.gallery-slide.next {
+    left: auto;
+    right: -100%;
 }
 
 .gallery-overlay {
@@ -555,6 +564,12 @@ nav [class*=" icon-"] {
 
 .next-image-arrow:before {
     background: url('icons/arrow-r.png') no-repeat;
+}
+
+@media screen and (min-width: 1024px) {
+    .gallery-slide img {
+        box-shadow: 0 0 150px rgba(0, 0, 0, 0.9);
+    }
 }
 
 /* ==========================================================================

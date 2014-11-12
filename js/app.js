@@ -4,6 +4,11 @@ requirejs.config({
         async: 'require/async',
         app: '../app',
         soundcloud: 'http://connect.soundcloud.com/sdk'
+    },
+    shim: {
+        'velocity': {
+            deps: ['jquery']
+        }
     }
 });
 

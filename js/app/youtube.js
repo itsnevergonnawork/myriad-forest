@@ -1,6 +1,6 @@
 define([
     'require',
-    'jquery.velocity'
+    'velocity'
 ],
 function(require) {
     var ytPlayers = [];

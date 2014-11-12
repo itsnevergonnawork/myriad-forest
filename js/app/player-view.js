@@ -3,7 +3,8 @@ define([
     'jquery',
     'react',
     'app/player',
-    'app/util'
+    'app/util',
+    'app/reactInit'
 ], function($, React, player, util) {
     var stringPad = '\xA0\xA0\xA0\xA0\xA0\xA0\xA0\xA0\xA0\xA0\xA0\xA0',
         winLen = 12,
