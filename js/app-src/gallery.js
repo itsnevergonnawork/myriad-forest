@@ -4,9 +4,10 @@ define([
     'app/image-service',
     'velocity',
     'hammer',
+    'jquery',
     'app/reactInit',
     'request-animation-frame'
-], function(React, imageService, velocity, hammer) {
+], function(React, imageService, velocity, hammer, $) {
     var ReactTransitionGroup = React.addons.TransitionGroup;
 
     var GallerySlide = React.createClass({
@@ -37,8 +38,8 @@ define([
                 velocity(this.getDOMNode(), { opacity: 0 }, { duration: 400, complete: completeLeave });
             }
         },
-        disableDragNDrop: function() {
-            return false;
+        disableDragNDrop: function(event) {
+            event.preventDefault();
         },
         render: function() {
             var overlay,
@@ -110,15 +111,23 @@ define([
 
     var Gallery = React.createClass({
         getInitialState: function() {
-            return { imgIdx: 0 };
+            return {
+                imgIdx: 0,
+                showArrows: false
+            };
+        },
+        updateWidth: function() {
+            if (this.isMounted()) {
+                this.setState({ width: this.getDOMNode().offsetWidth });
+            }
         },
         componentDidMount: function() {
             var node = this.getDOMNode(),
                 hammerMan = new hammer.Manager(node),
-                width = node.offsetWidth,
                 that = this;
 
-            this.setState({ width: width });
+            $(window).resize(this.updateWidth);
+            this.updateWidth();
 
             hammerMan.add(new hammer.Pan({ direction: hammer.DIRECTION_HORIZONTAL, threshold: 20, pointers: 1 }));
             hammerMan.on('panstart panmove', function(event) {
@@ -177,19 +186,36 @@ define([
                 leaving: ''
             });
         },
-        handleClick: function() {
+        handleClick: function(event) {
             var index = this.state.imgIdx,
-                next = imageService.getNextIndex(this.props.galleryId, index);
+                left = event.clientX < this.state.width / 2,
+                next;
 
+            if (left) {
+                next = imageService.getPrevIndex(this.props.galleryId, index);
+            } else {
+                next = imageService.getNextIndex(this.props.galleryId, index);
+            }
             this.setState({ imgIdx: next });
         },
-        handleTouchStart: function() {
+        handleTouchStart: function(event) {
             velocity(this.getDOMNode(), 'stop');
             this.setState({ sliding: true });
             // prevent click event firing during touch interaction
-            return false;
+            event.preventDefault();
         },
         handleTouchEnd: function() {
+        },
+        // TODO handling mousemove is somewhat cpu intensive...
+        handleMouseMove: function(event) {
+            var hover = (event.clientX < this.state.width / 2)
+                        ? 'left'
+                        : 'right';
+
+            this.setState({
+                showArrows: true,
+                hover: hover
+            });
         },
         render: function() {
             var style = {},
@@ -201,7 +227,11 @@ define([
                 leaving = this.state.leaving,
                 leavingCurrent = leaving ? 'immediate' : '',
                 leavingPrev = 'next' == leaving ? 'immediate' : '',
-                leavingNext = 'prev' == leaving ? 'immediate' : '';
+                leavingNext = 'prev' == leaving ? 'immediate' : '',
+                prevArrow,
+                prevArrowStyle = {},
+                nextArrow,
+                nextArrowStyle = {};
 
             if (this.state.imgIdx >= 0) {
                 slide = <GallerySlide galleryId={this.props.galleryId} imgIdx={this.state.imgIdx} leaveStyle={leavingCurrent} key={this.state.imgIdx} />
@@ -219,11 +249,34 @@ define([
                 };
             }
 
+            if (this.state.showArrows) {
+                prevArrowStyle = {
+                    opacity: ('left' == this.state.hover) ? 1 : 0
+                },
+                prevArrow = <div className="prev-image-arrow"
+                                 style={prevArrowStyle}>
+                            </div>;
+                nextArrowStyle = {
+                    opacity: ('right' == this.state.hover) ? 1 : 0
+                };
+                nextArrow = <div className="next-image-arrow"
+                                 style={nextArrowStyle}>
+                            </div>;
+            }
+
             return (
-                <ReactTransitionGroup component={React.DOM.div} className="gallery-root" style={style} onClick={this.handleClick} onTouchStart={this.handleTouchStart} onTouchEnd={this.handleTouchEnd}>
+                <ReactTransitionGroup component={React.DOM.div}
+                        className="gallery-root"
+                        style={style}
+                        onClick={this.handleClick}
+                        onTouchStart={this.handleTouchStart}
+                        onTouchEnd={this.handleTouchEnd}
+                        onMouseMove={this.handleMouseMove}>
                     {prevSlide}
                     {slide}
                     {nextSlide}
+                    {prevArrow}
+                    {nextArrow}
                 </ReactTransitionGroup>
             );
         }

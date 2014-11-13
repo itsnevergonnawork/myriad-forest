@@ -536,9 +536,10 @@ nav [class*=" icon-"] {
 }
 
 .prev-image-arrow, .next-image-arrow {
-    display: none;
     position: absolute;
     top: 50%;
+    -webkit-transition: all 0.2s ease-out;
+    transition: all 0.2s ease-out;
 }
 
 .prev-image-arrow {
