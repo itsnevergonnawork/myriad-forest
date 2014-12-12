@@ -5,9 +5,10 @@ define([
     'velocity',
     'hammer',
     'jquery',
+    'app/click-buster',
     'app/reactInit',
     'request-animation-frame'
-], function(React, imageService, velocity, hammer, $) {
+], function(React, imageService, velocity, hammer, $, clickBuster) {
     var ReactTransitionGroup = React.addons.TransitionGroup;
 
     var GallerySlide = React.createClass({displayName: 'GallerySlide',
@@ -95,6 +96,7 @@ define([
         }
     });
 
+    /* TODO this probably only makes sense when there's just one gallery */
     var requestNodeTranslation = (function() {
         var ticking = false;
 
@@ -124,21 +126,41 @@ define([
         componentDidMount: function() {
             var node = this.getDOMNode(),
                 hammerMan = new hammer.Manager(node),
+                lastDelta = 0,
+                prevDelta = 0,
+                dir = 0,
+                updateDirData = function(delta) {
+                    var relDelta;
+
+                    if (delta != lastDelta) {
+                        prevDelta = lastDelta;
+                        lastDelta = delta;
+                    }
+
+                    relDelta = lastDelta - prevDelta;
+
+                    dir = relDelta < 0 ? -1 : 1;
+                },
                 that = this;
 
             $(window).resize(this.updateWidth);
             this.updateWidth();
 
-            hammerMan.add(new hammer.Pan({ direction: hammer.DIRECTION_HORIZONTAL, threshold: 20, pointers: 1 }));
+            hammerMan.add(new hammer.Pan({ direction: hammer.DIRECTION_HORIZONTAL, threshold: 10, pointers: 1 }));
+            hammerMan.on('panstart', function(event) {
+                velocity(node, 'stop');
+                that.setState({ sliding: true });
+            });
             hammerMan.on('panstart panmove', function(event) {
                 requestNodeTranslation(node, event.deltaX);
+                updateDirData(event.deltaX);
             });
-            hammerMan.on("hammer.input", function(event) {
+            hammerMan.on("panend pancancel", function(event) {
                 var trValue = '0px';
 
                 if(event.isFinal) {
                     trValue = event.deltaX + 'px';
-                    if (hammer.DIRECTION_LEFT == event.direction) {
+                    if (-1 == dir) {
                         if (event.deltaX >= 0) {
                             // still at the same slide
                             velocity(node, { translateX: ['0px', trValue] }, { duration: 300 });
@@ -155,6 +177,15 @@ define([
                             velocity(node, { translateX: [that.state.width + 'px', trValue] }, { duration: 300, complete: that.completePrev });
                         }
                     }
+                }
+                lastDelta = 0;
+                prevDelta = 0;
+
+                if (undefined != event.srcEvent.clientX) {
+                    clickBuster.preventGhostClick(
+                        event.srcEvent.clientX,
+                        event.srcEvent.clientY
+                    );
                 }
             });
         },
@@ -191,6 +222,7 @@ define([
                 left = event.clientX < this.state.width / 2,
                 next;
 
+            // TODO stop animation on click
             if (left) {
                 next = imageService.getPrevIndex(this.props.galleryId, index);
             } else {
